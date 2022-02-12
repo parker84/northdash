@@ -3,6 +3,21 @@ north-dash
 
 Status dashboard for Canada, a single place to quick understanding of how Canada is faring, based on the data.
 
+### Getting Started
+
+Setup environment:
+```sh
+# for mac
+virtualenv ./venv -p python3.9
+source ./venv/bin/activate
+pip install -r ./requirements
+```
+
+Launch the dashboard locally:
+```sh
+strealit run ./src/visualization/dash.py
+```
+
 Project Organization
 ------------
 
