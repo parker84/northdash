@@ -7,7 +7,7 @@ Status dashboard for Canada, a single place to quick understanding of how Canada
 - [Getting Started](#get-started)
 - [Project Organization](#project-organization)
 
-## [Getting Started](#get-started)
+## Getting Started
 
 ### Setup environment:
 ```sh
@@ -41,7 +41,7 @@ export PYTHONPATH="/Users/brydonparker/Documents/projects/side_projects/north-da
 strealit run ./src/visualization/dash.py
 ```
 
-## [Project Organization](#project-organization)
+## Project Organization
 
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
