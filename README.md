@@ -4,7 +4,7 @@ north-dash
 Status dashboard for Canada, a single place to quick understanding of how Canada is faring, based on the data.
 
 ### Table of Contents
-- [Getting Started](#get-started)
+- [Getting Started](#getting-started)
 - [Project Organization](#project-organization)
 
 ## Getting Started
