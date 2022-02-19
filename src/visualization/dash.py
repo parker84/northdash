@@ -10,7 +10,7 @@ conn = engine.connect()
 
 #--------loaders
 @st.cache(hash_funcs={sqlalchemy.engine.base.Connection: id})
-def get_earnings_monthly_snapshot(start_date, end_date, geo):
+def get_monthly_earnings_all_industries(start_date, end_date, geo):
     with open('./src/visualization/sql_queries/get_monthly_earnings_all_industries.sql', 'r') as f:
         query = f.read().format(
             start_date=start_date,
@@ -100,17 +100,17 @@ with col2:
     fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 with col3: 
-    earnings_monthly_snapshot_df = get_earnings_monthly_snapshot(start_date, end_date, geo)
+    monthly_earnings_all_industries = get_monthly_earnings_all_industries(start_date, end_date, geo)
     st.metric(
         'Avg Weekly Earnings', 
-        value="${:,.2f}".format(earnings_monthly_snapshot_df.avg_weekly_earnings.iloc[0]), 
+        value="${:,.2f}".format(monthly_earnings_all_industries.avg_weekly_earnings.iloc[0]), 
         delta='{}% Year over Year'.format(
-            round(100*((earnings_monthly_snapshot_df.avg_weekly_earnings.iloc[0] 
-            / earnings_monthly_snapshot_df.avg_weekly_earnings.iloc[12])-1), 2)
+            round(100*((monthly_earnings_all_industries.avg_weekly_earnings.iloc[0] 
+            / monthly_earnings_all_industries.avg_weekly_earnings.iloc[12])-1), 2)
         )
     )
     fig = px.line(
-        earnings_monthly_snapshot_df, x="month_begin_date", y="avg_weekly_earnings", title='Avg Weekly Earnings', width=300, height=300)
+        monthly_earnings_all_industries, x="month_begin_date", y="avg_weekly_earnings", title='Avg Weekly Earnings', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 with col4: 
     st.metric('Avg Price', value=10, delta='1%')
