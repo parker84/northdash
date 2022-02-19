@@ -15,7 +15,14 @@ pip install -r ./requirements
 
 Launch the dashboard locally:
 ```sh
+export PYTHONPATH="/Users/brydonparker/Documents/projects/side_projects/north-dash" # change to top of this repo on your mac
 strealit run ./src/visualization/dash.py
+```
+
+### Prepping Data (Locally)
+```sh
+export PYTHONPATH="/Users/brydonparker/Documents/projects/side_projects/north-dash" # change to top of this repo on your mac
+python ./src/data/load_csvs_into_db.py
 ```
 
 Project Organization

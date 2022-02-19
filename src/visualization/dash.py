@@ -35,6 +35,12 @@ with st.sidebar.expander('More Parameter Options', expanded=False):
     start_date = st.date_input('Start Date', datetime.date(1900, 1, 1))
     end_date = st.date_input('End Date', datetime.datetime.now())
 
+province = st.sidebar.markdown(
+    """
+    Like 🍁 Northdash and want to say thanks?       
+    [:coffee: buy me a coffee](https://www.buymeacoffee.com/brydon)
+    """
+)
 
 #-------key metrics
 st.header('Section 1: TL;DR')
@@ -45,22 +51,22 @@ col1, col2, col3, col4 = st.columns(4)
 with col1: 
     st.metric('GDP', value=10, delta='1%')
     df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=400, height=400)
+    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 with col2: 
     st.metric('GDP per Capita', value=10, delta='1%')
     df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=400, height=400)
+    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 with col3: 
     st.metric('Avg Weekly Earnings', value=10, delta='1%')
     df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=400, height=400)
+    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 with col4: 
     st.metric('Avg Price', value=10, delta='1%')
     df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=400, height=400)
+    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 
 st.subheader('Social/Environmental Metrics')
@@ -68,22 +74,22 @@ col1, col2, col3, col4 = st.columns(4)
 with col1: 
     st.metric('Population', value=10, delta='1%')
     df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=400, height=400)
+    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 with col2: 
     st.metric('% Low Income', value=10, delta='1%')
     df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=400, height=400)
+    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 with col3: 
     st.metric('% Unemployed', value=10, delta='1%')
     df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=400, height=400)
+    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 with col4: 
     st.metric('Emissions', value=10, delta='1%')
     df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=400, height=400)
+    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 
 
