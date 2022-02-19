@@ -2,7 +2,7 @@
 
 **Purpose**: Create a table with the avg_weekly_earnings per province and canada wide.
 
-**Grain unique column set**: [`month_begin_date`, `geo`]
+**Grain unique column set**: [`month_begin_date`, `geo`, `industry`]
 
 **Non additive facts**: [ `avg_weekly_earnings` ]
 
@@ -11,5 +11,6 @@
 
 ### Schema
 1. `month_begin_date`: 1st day of month being analyzed
-2. `geo`: Province or Canada if it's at the Canada wide level
-3. `avg_weekly_earnings`: Average weekly earnings including overtime
+2. `geo`: Province/Country (Canada is the only country option though)
+3. `industry`: North American Industry Classification System (NAICS), to get all industries filter to `Industrial aggregate excluding unclassified businesses [11-91N]`.
+4. `avg_weekly_earnings`: Average weekly earnings including overtime

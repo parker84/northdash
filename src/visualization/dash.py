@@ -11,7 +11,7 @@ conn = engine.connect()
 #--------loaders
 @st.cache(hash_funcs={sqlalchemy.engine.base.Connection: id})
 def get_earnings_monthly_snapshot(start_date, end_date, geo):
-    with open('./src/visualization/sql_queries/get_earnings_monthly_snapshot.sql', 'r') as f:
+    with open('./src/visualization/sql_queries/get_monthly_earnings_all_industries.sql', 'r') as f:
         query = f.read().format(
             start_date=start_date,
             end_date=end_date,
