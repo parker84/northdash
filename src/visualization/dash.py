@@ -20,6 +20,17 @@ def get_monthly_earnings_all_industries(start_date, end_date, geo):
     df = pd.read_sql(query, con=conn)
     return df
 
+@st.cache(hash_funcs={sqlalchemy.engine.base.Connection: id})
+def get_yearly_emissions_all_sectors(start_date, end_date, geo):
+    with open('./src/visualization/sql_queries/get_yearly_emissions_all_sectors.sql', 'r') as f:
+        query = f.read().format(
+            start_date=start_date,
+            end_date=end_date,
+            geo=geo
+        )
+    df = pd.read_sql(query, con=conn)
+    return df
+
 #------dash setup
 st.set_page_config(
     layout='wide', 
@@ -136,9 +147,17 @@ with col3:
     fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 with col4: 
-    st.metric('Emissions', value=10, delta='1%')
-    df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
+    yearly_emissions_all_sectors = get_yearly_emissions_all_sectors(start_date, end_date, geo)
+    st.metric(
+        'Yearly Emissions', 
+        value="{:,.2f}".format(yearly_emissions_all_sectors.yearly_kilotonnes.iloc[0]), 
+        delta='{}% Year over Year'.format(
+            round(100*((yearly_emissions_all_sectors.yearly_kilotonnes.iloc[0] 
+            / yearly_emissions_all_sectors.yearly_kilotonnes.iloc[1])-1), 2)
+        )
+    )
+    fig = px.line(
+        yearly_emissions_all_sectors, x="year_begin_date", y="yearly_kilotonnes", title='Yearly Emissions', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 
 
