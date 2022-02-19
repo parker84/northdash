@@ -154,7 +154,8 @@ with col4:
         delta='{}% Year over Year'.format(
             round(100*((yearly_emissions_all_sectors.yearly_kilotonnes.iloc[0] 
             / yearly_emissions_all_sectors.yearly_kilotonnes.iloc[1])-1), 2)
-        )
+        ), 
+        delta_color='inverse'
     )
     fig = px.line(
         yearly_emissions_all_sectors, x="year_begin_date", y="yearly_kilotonnes", title='Yearly Emissions', width=300, height=300)
@@ -165,14 +166,17 @@ with col4:
 with st.expander('Section 2: Economic Deep Dive', expanded=False):
     st.header('Section 2: Economic Deep Dive')
     st.markdown('Detailed economic metrics and breakdowns by industry and province')
+    st.markdown('Coming Soon!')
 
 with st.expander('Section 3: Social Deep Dive', expanded=False):
     st.header('Section 3: Social Deep Dive')
     st.markdown('Detailed social metrics and breakdowns by province')
+    st.markdown('Coming Soon!')
 
 with st.expander('Section 4: Environmental Deep Dive', expanded=False):
     st.header('Section 4: Environmental Deep Dive')
     st.markdown('Detailed environmental metrics and breakdowns by province')
+    st.markdown('Coming Soon!')
 
 with st.expander('Section 5: Data', expanded=False):
     st.header('Section 5: Data')
