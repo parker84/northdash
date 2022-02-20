@@ -1,6 +1,6 @@
 
-drop table if exists stg.gdp_yearly_snapshot;
-create table stg.gdp_yearly_snapshot as 
+drop table if exists stg.provincial_gdp_yearly_snapshot;
+create table stg.provincial_gdp_yearly_snapshot as 
 select 
 	date(concat("REF_DATE", '-01-01')) as year_begin_date,
 	"GEO" as geo,

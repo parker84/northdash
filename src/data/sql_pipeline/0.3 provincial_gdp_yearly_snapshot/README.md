@@ -1,4 +1,4 @@
-# 0.3 gdp_yearly_snapshot
+# 0.3 provincial_gdp_yearly_snapshot
 
 **Purpose**: Create a table with the gdp per province and canada wide.
 
