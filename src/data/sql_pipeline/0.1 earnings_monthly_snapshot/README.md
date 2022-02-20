@@ -12,5 +12,5 @@
 ### Schema
 1. `month_begin_date`: 1st day of month being analyzed
 2. `geo`: Province/Country (Canada is the only country option though)
-3. `industry`: North American Industry Classification System (NAICS), to get all industries filter to `Industrial aggregate excluding unclassified businesses [11-91N]`.
+3. `industry`: North American Industry Classification System (NAICS), to get all industries filter to `Industrial aggregate excluding unclassified businesses [11-91N]`
 4. `avg_weekly_earnings`: Average weekly earnings including overtime

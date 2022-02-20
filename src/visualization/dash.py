@@ -31,6 +31,21 @@ def get_yearly_emissions_all_sectors(start_date, end_date, geo):
     df = pd.read_sql(query, con=conn)
     return df
 
+@st.cache(hash_funcs={sqlalchemy.engine.base.Connection: id})
+def get_gdp_all_industries(start_date, end_date, geo):
+    if geo == 'Canada':
+        file_path = './src/visualization/sql_queries/get_canada_gdp_all_industries.sql'
+    else:
+        file_path = './src/visualization/sql_queries/get_provincial_gdp_all_industries.sql'
+    with open(file_path, 'r') as f:
+        query = f.read().format(
+            start_date=start_date,
+            end_date=end_date,
+            geo=geo
+        )
+    df = pd.read_sql(query, con=conn)
+    return df
+
 #------dash setup
 st.set_page_config(
     layout='wide', 
@@ -50,6 +65,17 @@ with st.expander('README', expanded=False):
     """
     ### Caveats:
     1. Not all data sources start and end at the same time.
+    2. Metrics are colored based good/bad, so if emissions for example are increasing year over year they will be colored as red.
+
+    ### Definitions:
+    1. GDP: 
+    2. GDP per Capita:
+    3. Avg Weekly Earnings: 
+    4. Avg Price: 
+    5. Population: 
+    6. % Low Income: 
+    7. % Unemployed: 
+    8. Yearly Emissions: 
 
     ### Tips:
     1. You can zoom in on any graph by clicking and dragging a box on the graph where you want to zoom.
@@ -101,9 +127,18 @@ st.markdown('Metric summaries')
 st.subheader('Economic Metrics')
 col1, col2, col3, col4 = st.columns(4)
 with col1: 
-    st.metric('GDP', value=10, delta='1%')
-    df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
+    gdp_all_industries = get_gdp_all_industries(start_date, end_date, geo)
+    gdp_all_industries = gdp_all_industries.dropna(axis=0)
+    st.metric(
+        'GDP', 
+        value="${:,.3f}T".format(gdp_all_industries.gdp.iloc[0]/1e+12), 
+        delta='{}% Year over Year'.format(
+            round(100*((gdp_all_industries.gdp.iloc[0] 
+            / gdp_all_industries.gdp.iloc[1])-1), 2)
+        )
+    )
+    fig = px.line(
+        gdp_all_industries, x="year_begin_date", y="gdp", title='GDP (in current dollars)', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 with col2: 
     st.metric('GDP per Capita', value=10, delta='1%')
