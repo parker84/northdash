@@ -64,6 +64,17 @@ def get_gdp_all_industries(start_date, end_date, geo):
     df = pd.read_sql(query, con=conn)
     return df
 
+@st.cache(hash_funcs={sqlalchemy.engine.base.Connection: id})
+def get_monthly_population(start_date, end_date, geo):
+    with open('./src/visualization/sql_queries/get_monthly_population.sql', 'r') as f:
+        query = f.read().format(
+            start_date=start_date,
+            end_date=end_date,
+            geo=geo
+        )
+    df = pd.read_sql(query, con=conn)
+    return df
+
 #------helpers
 def viz_status_metric(df, x_axis, y_axis, metric_value, title):
     if x_axis == 'month_begin_date':
@@ -102,6 +113,7 @@ with st.expander('README', expanded=False):
     ### Caveats:
     1. Not all data sources start and end at the same time.
     2. Metrics are colored based good/bad, so if emissions for example are increasing year over year they will be colored as red.
+    3. Population is only estimated for those 15 years of age and older.
 
     ### Definitions:
     1. GDP: 
@@ -203,10 +215,14 @@ with col4:
 st.subheader('Social/Environmental Metrics')
 col1, col2, col3, col4 = st.columns(4)
 with col1: 
-    st.metric('Population', value=10, delta='1%')
-    df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
-    st.plotly_chart(fig, use_container_width=True)
+    monthly_population = get_monthly_population(start_date, end_date, geo)
+    viz_status_metric(
+        monthly_population, 
+        x_axis='month_begin_date',
+        y_axis='population',
+        metric_value="{:,.1f}M".format(monthly_population.population.iloc[0] / 1e+06),
+        title='Population'
+    )
 with col2: 
     st.metric('% Low Income', value=10, delta='1%')
     df = px.data.gapminder().query("country=='Canada'")
