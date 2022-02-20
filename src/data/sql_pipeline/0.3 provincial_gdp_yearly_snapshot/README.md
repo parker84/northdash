@@ -1,6 +1,6 @@
 # 0.3 provincial_gdp_yearly_snapshot
 
-**Purpose**: Create a table with the gdp per province and canada wide.
+**Purpose**: Create a table with the gdp per province.
 
 **Grain unique column set**: [`year_begin_date`, `geo`, `industry`]
 

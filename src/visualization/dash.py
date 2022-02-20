@@ -8,6 +8,24 @@ import sqlalchemy
 engine = create_engine(ENGINE_PATH)
 conn = engine.connect()
 
+#-------constants
+GEO_OPTIONS = [
+    'Canada',
+    'Alberta', 
+    'British Columbia', 
+    'Manitoba', 
+    'New Brunswick', 
+    'Newfoundland and Labrador', 
+    'Northwest Territories', 
+    'Nova Scotia', 
+    'Nunavut', 
+    'Ontario', 
+    'Prince Edward Island', 
+    'Quebec', 
+    'Saskatchewan', 
+    'Yukon'
+]
+
 #--------loaders
 @st.cache(hash_funcs={sqlalchemy.engine.base.Connection: id})
 def get_monthly_earnings_all_industries(start_date, end_date, geo):
@@ -45,6 +63,24 @@ def get_gdp_all_industries(start_date, end_date, geo):
         )
     df = pd.read_sql(query, con=conn)
     return df
+
+#------helpers
+def viz_status_metric(df, x_axis, y_axis, metric_value, title):
+    if x_axis == 'month_begin_date':
+        yoy_diff_int = 12
+    elif x_axis == 'year_begin_date':
+        yoy_diff_int = 1
+    st.metric(
+        title, 
+        value=metric_value, 
+        delta='{}% Year over Year'.format(
+            round(100*((df[y_axis].iloc[0] 
+            / df[y_axis].iloc[yoy_diff_int])-1), 2)
+        )
+    )
+    fig = px.line(
+        df, x=x_axis, y=y_axis, title=title, width=350, height=350)
+    st.plotly_chart(fig, use_container_width=True)
 
 #------dash setup
 st.set_page_config(
@@ -96,7 +132,7 @@ with st.expander('README', expanded=False):
 st.sidebar.title('🍁NorthDash')
 geo = st.sidebar.selectbox(
     'Choose Province/Country', 
-    ['Canada', 'Ontario'], 
+    GEO_OPTIONS, 
     help='If you want to see metrics for a specific province instead of all of Canada, you can choose which province here.'
 )
 with st.sidebar.expander('More Parameter Options', expanded=False):
@@ -128,18 +164,22 @@ st.subheader('Economic Metrics')
 col1, col2, col3, col4 = st.columns(4)
 with col1: 
     gdp_all_industries = get_gdp_all_industries(start_date, end_date, geo)
-    gdp_all_industries = gdp_all_industries.dropna(axis=0)
-    st.metric(
-        'GDP', 
-        value="${:,.3f}T".format(gdp_all_industries.gdp.iloc[0]/1e+12), 
-        delta='{}% Year over Year'.format(
-            round(100*((gdp_all_industries.gdp.iloc[0] 
-            / gdp_all_industries.gdp.iloc[1])-1), 2)
+    if geo == 'Canada':
+        viz_status_metric(
+            gdp_all_industries, 
+            x_axis='month_begin_date',
+            y_axis='gdp',
+            metric_value="${:,.3f}T".format(gdp_all_industries.gdp.iloc[0]/1e+12),
+            title='GDP'
         )
-    )
-    fig = px.line(
-        gdp_all_industries, x="year_begin_date", y="gdp", title='GDP (in current dollars)', width=300, height=300)
-    st.plotly_chart(fig, use_container_width=True)
+    else:
+        viz_status_metric(
+            gdp_all_industries, 
+            x_axis='year_begin_date',
+            y_axis='gdp',
+            metric_value="${:,.3f}T".format(gdp_all_industries.gdp.iloc[0]/1e+12),
+            title='GDP'
+        )
 with col2: 
     st.metric('GDP per Capita', value=10, delta='1%')
     df = px.data.gapminder().query("country=='Canada'")
@@ -147,17 +187,13 @@ with col2:
     st.plotly_chart(fig, use_container_width=True)
 with col3: 
     monthly_earnings_all_industries = get_monthly_earnings_all_industries(start_date, end_date, geo)
-    st.metric(
-        'Avg Weekly Earnings', 
-        value="${:,.2f}".format(monthly_earnings_all_industries.avg_weekly_earnings.iloc[0]), 
-        delta='{}% Year over Year'.format(
-            round(100*((monthly_earnings_all_industries.avg_weekly_earnings.iloc[0] 
-            / monthly_earnings_all_industries.avg_weekly_earnings.iloc[12])-1), 2)
-        )
+    viz_status_metric(
+            monthly_earnings_all_industries, 
+            x_axis='month_begin_date',
+            y_axis='avg_weekly_earnings',
+            metric_value="${:,.2f}".format(monthly_earnings_all_industries.avg_weekly_earnings.iloc[0]),
+            title='Avg Weekly Earnings'
     )
-    fig = px.line(
-        monthly_earnings_all_industries, x="month_begin_date", y="avg_weekly_earnings", title='Avg Weekly Earnings', width=300, height=300)
-    st.plotly_chart(fig, use_container_width=True)
 with col4: 
     st.metric('Avg Price', value=10, delta='1%')
     df = px.data.gapminder().query("country=='Canada'")
@@ -183,18 +219,13 @@ with col3:
     st.plotly_chart(fig, use_container_width=True)
 with col4: 
     yearly_emissions_all_sectors = get_yearly_emissions_all_sectors(start_date, end_date, geo)
-    st.metric(
-        'Yearly Emissions', 
-        value="{:,.2f}".format(yearly_emissions_all_sectors.yearly_kilotonnes.iloc[0]), 
-        delta='{}% Year over Year'.format(
-            round(100*((yearly_emissions_all_sectors.yearly_kilotonnes.iloc[0] 
-            / yearly_emissions_all_sectors.yearly_kilotonnes.iloc[1])-1), 2)
-        ), 
-        delta_color='inverse'
+    viz_status_metric(
+        yearly_emissions_all_sectors, 
+        x_axis='year_begin_date',
+        y_axis='yearly_kilotonnes',
+        metric_value="{:,.2f}".format(yearly_emissions_all_sectors.yearly_kilotonnes.iloc[0]),
+        title='Yearly Emissions'
     )
-    fig = px.line(
-        yearly_emissions_all_sectors, x="year_begin_date", y="yearly_kilotonnes", title='Yearly Emissions', width=300, height=300)
-    st.plotly_chart(fig, use_container_width=True)
 
 
 #-------drill downs
