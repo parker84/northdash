@@ -174,8 +174,8 @@ st.markdown('Metric summaries')
 
 st.subheader('Economic Metrics')
 col1, col2, col3, col4 = st.columns(4)
+gdp_all_industries = get_gdp_all_industries(start_date, end_date, geo)
 with col1: 
-    gdp_all_industries = get_gdp_all_industries(start_date, end_date, geo)
     if geo == 'Canada':
         viz_status_metric(
             gdp_all_industries, 
@@ -193,10 +193,22 @@ with col1:
             title='GDP'
         )
 with col2: 
-    st.metric('GDP per Capita', value=10, delta='1%')
-    df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
-    st.plotly_chart(fig, use_container_width=True)
+    if geo == 'Canada':
+        viz_status_metric(
+            gdp_all_industries, 
+            x_axis='month_begin_date',
+            y_axis='gdp_per_capita',
+            metric_value="${:,.0f}".format(gdp_all_industries.gdp_per_capita.iloc[0]),
+            title='GDP per Capita'
+        )
+    else:
+        viz_status_metric(
+            gdp_all_industries, 
+            x_axis='year_begin_date',
+            y_axis='gdp_per_capita',
+            metric_value="${:,.0f}".format(gdp_all_industries.gdp_per_capita.iloc[0]),
+            title='GDP per Capita'
+        )
 with col3: 
     monthly_earnings_all_industries = get_monthly_earnings_all_industries(start_date, end_date, geo)
     viz_status_metric(
