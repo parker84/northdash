@@ -75,8 +75,19 @@ def get_monthly_population(start_date, end_date, geo):
     df = pd.read_sql(query, con=conn)
     return df
 
+@st.cache(hash_funcs={sqlalchemy.engine.base.Connection: id})
+def get_monthly_unemployment_rate(start_date, end_date, geo):
+    with open('./src/visualization/sql_queries/get_monthly_unemployment_rate.sql', 'r') as f:
+        query = f.read().format(
+            start_date=start_date,
+            end_date=end_date,
+            geo=geo
+        )
+    df = pd.read_sql(query, con=conn)
+    return df
+
 #------helpers
-def viz_status_metric(df, x_axis, y_axis, metric_value, title):
+def viz_status_metric(df, x_axis, y_axis, metric_value, title, delta_color='normal'):
     if x_axis == 'month_begin_date':
         yoy_diff_int = 12
     elif x_axis == 'year_begin_date':
@@ -87,7 +98,8 @@ def viz_status_metric(df, x_axis, y_axis, metric_value, title):
         delta='{}% Year over Year'.format(
             round(100*((df[y_axis].iloc[0] 
             / df[y_axis].iloc[yoy_diff_int])-1), 2)
-        )
+        ),
+        delta_color=delta_color
     )
     fig = px.line(
         df, x=x_axis, y=y_axis, title=title, width=350, height=350)
@@ -241,10 +253,15 @@ with col2:
     fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
     st.plotly_chart(fig, use_container_width=True)
 with col3: 
-    st.metric('% Unemployed', value=10, delta='1%')
-    df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
-    st.plotly_chart(fig, use_container_width=True)
+    monthly_unemployment_rate = get_monthly_unemployment_rate(start_date, end_date, geo)
+    viz_status_metric(
+        monthly_unemployment_rate, 
+        x_axis='month_begin_date',
+        y_axis='unemployment_rate',
+        metric_value="{:,.1f}%".format(monthly_unemployment_rate.unemployment_rate.iloc[0]),
+        title='Unemployment Rate',
+        delta_color='inverse'
+    )
 with col4: 
     yearly_emissions_all_sectors = get_yearly_emissions_all_sectors(start_date, end_date, geo)
     viz_status_metric(
@@ -252,7 +269,8 @@ with col4:
         x_axis='year_begin_date',
         y_axis='yearly_kilotonnes',
         metric_value="{:,.2f}".format(yearly_emissions_all_sectors.yearly_kilotonnes.iloc[0]),
-        title='Yearly Emissions'
+        title='Yearly Emissions',
+        delta_color='inverse'
     )
 
 
