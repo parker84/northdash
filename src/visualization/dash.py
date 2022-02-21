@@ -97,6 +97,17 @@ def get_yearly_low_income_rate(start_date, end_date, geo):
     df = pd.read_sql(query, con=conn)
     return df
 
+@st.cache(hash_funcs={sqlalchemy.engine.base.Connection: id})
+def get_monthly_prices(start_date, end_date, geo):
+    with open('./src/visualization/sql_queries/get_monthly_prices.sql', 'r') as f:
+        query = f.read().format(
+            start_date=start_date,
+            end_date=end_date,
+            geo=geo
+        )
+    df = pd.read_sql(query, con=conn)
+    return df
+
 #------helpers
 def viz_status_metric(df, x_axis, y_axis, metric_value, title, delta_color='normal'):
     if x_axis == 'month_begin_date':
@@ -139,14 +150,14 @@ with st.expander('README', expanded=False):
     3. Population is only estimated for those 15 years of age and older.
 
     ### Definitions:
-    1. GDP: 
-    2. GDP per Capita:
+    1. GDP: Gross Domestic Product (GDP) 
+    2. GDP per Capita: Is the GDP divided by the number of people eligible to be in the workforce (number of people above the age of 15).
     3. Avg Weekly Earnings: 
-    4. Avg Price: 
-    5. Population: 
-    6. % Low Income: 
-    7. % Unemployed: 
-    8. Yearly Emissions: 
+    4. CPI: The Consumer Price Index (CPI) is an indicator of changes in consumer prices experienced by Canadians. It is obtained by comparing, over time, the cost of a fixed basket of goods and services purchased by consumers. Since the basket contains goods and services of unchanging or equivalent quantity and quality, the index reflects only pure price change. [See more details here](https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&SDDS=2301).
+    5. Population: Estimated number of people in country/province that are above the age of 15. 
+    6. Low Income Rate: 
+    7. Unemployment Rate: 
+    8. Yearly Emissions: Kilotonnes of carbon dioxide emissions, [see more details here](https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&SDDS=5115).
 
     ### Tips:
     1. You can zoom in on any graph by clicking and dragging a box on the graph where you want to zoom.
@@ -205,7 +216,7 @@ with col1:
             x_axis='month_begin_date',
             y_axis='gdp',
             metric_value="${:,.3f}T".format(gdp_all_industries.gdp.iloc[0]/1e+12),
-            title='GDP'
+            title='GDP (Gross Domestic Product)'
         )
     else:
         viz_status_metric(
@@ -213,7 +224,7 @@ with col1:
             x_axis='year_begin_date',
             y_axis='gdp',
             metric_value="${:,.3f}T".format(gdp_all_industries.gdp.iloc[0]/1e+12),
-            title='GDP'
+            title='GDP (Gross Domestic Product)'
         )
 with col2: 
     if geo == 'Canada':
@@ -242,10 +253,14 @@ with col3:
             title='Avg Weekly Earnings'
     )
 with col4: 
-    st.metric('Avg Price', value=10, delta='1%')
-    df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
-    st.plotly_chart(fig, use_container_width=True)
+    monthly_prices = get_monthly_prices(start_date, end_date, geo)
+    viz_status_metric(
+        monthly_prices, 
+        x_axis='month_begin_date',
+        y_axis='consumer_price_index',
+        metric_value="${:,.1f}".format(monthly_prices.consumer_price_index.iloc[0]),
+        title='CPI (Consumer Price Index)'
+    )
 
 st.subheader('Social/Environmental Metrics')
 col1, col2, col3, col4 = st.columns(4)
