@@ -4,5 +4,4 @@ WHERE TRUE
     AND geo = '{geo}'  
     AND age_group = '15 years and over'
     AND sex = 'Both sexes'
-    AND unemployment_rate is not null --some nulls for some provinces
 ORDER BY month_begin_date desc

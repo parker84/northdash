@@ -86,6 +86,17 @@ def get_monthly_unemployment_rate(start_date, end_date, geo):
     df = pd.read_sql(query, con=conn)
     return df
 
+@st.cache(hash_funcs={sqlalchemy.engine.base.Connection: id})
+def get_yearly_low_income_rate(start_date, end_date, geo):
+    with open('./src/visualization/sql_queries/get_yearly_low_income_rate.sql', 'r') as f:
+        query = f.read().format(
+            start_date=start_date,
+            end_date=end_date,
+            geo=geo
+        )
+    df = pd.read_sql(query, con=conn)
+    return df
+
 #------helpers
 def viz_status_metric(df, x_axis, y_axis, metric_value, title, delta_color='normal'):
     if x_axis == 'month_begin_date':
@@ -248,10 +259,15 @@ with col1:
         title='Population'
     )
 with col2: 
-    st.metric('% Low Income', value=10, delta='1%')
-    df = px.data.gapminder().query("country=='Canada'")
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada', width=300, height=300)
-    st.plotly_chart(fig, use_container_width=True)
+    yearly_low_income_rate = get_yearly_low_income_rate(start_date, end_date, geo)
+    viz_status_metric(
+        yearly_low_income_rate, 
+        x_axis='year_begin_date',
+        y_axis='low_income_rate',
+        metric_value="{:,.1f}%".format(yearly_low_income_rate.low_income_rate.iloc[0]),
+        title='Low Income Rate',
+        delta_color='inverse'
+    )
 with col3: 
     monthly_unemployment_rate = get_monthly_unemployment_rate(start_date, end_date, geo)
     viz_status_metric(
