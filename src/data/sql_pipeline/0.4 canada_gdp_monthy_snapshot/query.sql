@@ -1,6 +1,6 @@
 
-drop table if exists stg.canada_gdp_yearly_snapshot;
-create table stg.canada_gdp_yearly_snapshot as 
+drop table if exists stg.canada_gdp_monthy_snapshot;
+create table stg.canada_gdp_monthy_snapshot as 
 select 
 	date(concat("REF_DATE", '-01')) as month_begin_date,
 	"North American Industry Classification System (NAICS)" as industry,

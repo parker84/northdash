@@ -1,4 +1,4 @@
-# 0.3 canada_gdp_yearly_snapshot
+# 0.3 canada_gdp_monthy_snapshot
 
 **Purpose**: Create a table with the gdp for Canada.
 
