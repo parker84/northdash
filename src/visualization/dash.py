@@ -138,7 +138,7 @@ st.set_page_config(
         'About': "This dashboard was initially created by [Brydon Parker](https://linkpop.com/brydon)."
     }
 )
-st.title('Canada Status Dashboard')
+st.title("Canada's Status Dashboard")
 st.markdown("This dashboard provides a high level overview of critical metrics for 🇨🇦 Canada and each of it's provinces.")
 
 with st.expander('README', expanded=False):
@@ -261,7 +261,8 @@ with col4:
         x_axis='month_begin_date',
         y_axis='consumer_price_index',
         metric_value="${:,.1f}".format(monthly_prices.consumer_price_index.iloc[0]),
-        title='CPI (Consumer Price Index)'
+        title='CPI (Consumer Price Index)',
+        delta_color='inverse'
     )
 
 st.subheader('Social/Environmental Metrics')
