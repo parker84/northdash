@@ -144,32 +144,34 @@ st.markdown("This dashboard provides a high level overview of critical metrics f
 with st.expander('README', expanded=False):
     st.markdown(
     """
-    ### Caveats:
-    1. Not all data sources start and end at the same time.
-    2. Metrics are colored based good/bad, so if emissions for example are increasing year over year they will be colored as red.
-    3. Population is only estimated for those 15 years of age and older.
-
-    ### Definitions:
-    1. GDP: Gross Domestic Product (GDP) 
-    2. GDP per Capita: Is the GDP divided by the number of people eligible to be in the workforce (number of people above the age of 15).
-    3. Avg Weekly Earnings: 
-    4. CPI: The Consumer Price Index (CPI) is an indicator of changes in consumer prices experienced by Canadians. It is obtained by comparing, over time, the cost of a fixed basket of goods and services purchased by consumers. Since the basket contains goods and services of unchanging or equivalent quantity and quality, the index reflects only pure price change. [See more details here](https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&SDDS=2301).
-    5. Population: Estimated number of people in country/province that are above the age of 15. 
-    6. Low Income Rate: 
-    7. Unemployment Rate: 
-    8. Yearly Emissions: Kilotonnes of carbon dioxide emissions, [see more details here](https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&SDDS=5115).
-
-    ### Tips:
-    1. You can zoom in on any graph by clicking and dragging a box on the graph where you want to zoom.
-    2. For each parameter (ex: Province/Country), if you hover over the "(?)" (top right of parameter) you can see more detailed instructions for that parameter. 
-    3. Have questions/feedback? Join our [slack workspace](https://join.slack.com/t/northdashworkspace/shared_invite/zt-13znumtxg-TTnPqSFOzXMV18lg~TsILQ)
-
     ### Sections:
     1. **TL;DR**: Metric summaries
     2. **Economic Deep Dive**: Detailed economic metrics and breakdowns by industry and province
     3. **Social Deep Dive**: Detailed social metrics and breakdowns by province
     4. **Environmental Deep Dive**: Detailed environmental metrics and breakdowns by province
     5. **Data**: Links and descriptions of each data source used in this dashboard
+
+    ### Definitions:
+    1. GDP: Gross Domestic Product (GDP). [See more details here](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610040201). 
+    2. GDP per Capita: Is the GDP divided by the number of people eligible to be in the workforce (number of people above the age of 15).
+    3. Avg Weekly Earnings: Average weekly earnings including overtime for all employees. [See more details here](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410022301&pickMembers%5B0%5D=2.2&pickMembers%5B1%5D=3.2&cubeTimeFrame.startMonth=07&cubeTimeFrame.startYear=2021&cubeTimeFrame.endMonth=11&cubeTimeFrame.endYear=2021&referencePeriods=20210701%2C20211101).
+    4. CPI: The Consumer Price Index (CPI) is an indicator of changes in consumer prices experienced by Canadians. It is obtained by comparing, over time, the cost of a fixed basket of goods and services purchased by consumers. Since the basket contains goods and services of unchanging or equivalent quantity and quality, the index reflects only pure price change. [See more details here](https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&SDDS=2301).
+    5. Population: Estimated number of people in country/province that are above the age of 15. 
+    6. Low Income Rate: Percentage of persons in low income. [See more details here](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1110013501).
+    7. Unemployment Rate: The unemployment rate is the number of unemployed persons expressed as a percentage of the labour force. The unemployment rate for a particular group (age, sex, marital status, etc.) is the number unemployed in that group expressed as a percentage of the labour force for that group. Estimates are percentages, rounded to the nearest tenth. [See more details here](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410028703).
+    8. Yearly Emissions: Kilotonnes of carbon dioxide emissions. [See more details here](https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&SDDS=5115).
+
+    ### Caveats:
+    1. Not all data sources start and end at the same time.
+    2. If the start/end date selected goes beyond the range of data we will go by the earliest/latest data point available.
+    3. Metrics are colored based on good/bad, so if emissions for example are increasing year over year they will be colored as red.
+    4. Population is only estimated for those 15 years of age and older.
+
+    ### Tips:
+    1. You can zoom in on any graph by clicking and dragging a box on the graph where you want to zoom.
+    2. For each parameter (ex: Province/Country), if you hover over the "(?)" (top right of parameter) you can see more detailed instructions for that parameter. 
+    3. Each section (except section 1) can expand/contract if your click on the +/-.
+    3. Have questions/feedback? Join our [slack workspace](https://join.slack.com/t/northdashworkspace/shared_invite/zt-13znumtxg-TTnPqSFOzXMV18lg~TsILQ)
     """
     )
 
