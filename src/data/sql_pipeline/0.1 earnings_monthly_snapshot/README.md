@@ -8,6 +8,7 @@
 
 ### Caveats:
 1. This is excluding unclassified businesses
+2. Some industries are missing `avg_weekly_earnings` for some geos/industry pairs, but there are no missing values when industry = `'All industries [T001]'`
 
 ### Schema
 1. `month_begin_date`: 1st day of month being analyzed
