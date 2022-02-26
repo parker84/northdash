@@ -28,11 +28,27 @@ StatsCan:
 6. [Gross domestic product (GDP) at basic prices, by industry, monthly (x 1,000,000)](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3610043401)
 7. [Employment and average weekly earnings (including overtime) for all employees by province and territory, monthly, seasonally adjusted](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410022301&pickMembers%5B0%5D=2.2&pickMembers%5B1%5D=3.1&cubeTimeFrame.startMonth=07&cubeTimeFrame.startYear=2021&cubeTimeFrame.endMonth=11&cubeTimeFrame.endYear=2021&referencePeriods=20210701%2C20211101)
 
+### Db Setup
+Create a .env file
+```
+DB_HOST = ""
+DB = ""
+DB_USER = ""
+DB_PWD = "
+```
+
 ### Preparing the Data
 ```sh
 export PYTHONPATH="/Users/brydonparker/Documents/projects/side_projects/north-dash" # change to top of this repo 
 python ./src/data/load_csvs_into_db.py
+```
 
+### Running the pipeline
+Run the sql scripts in the `./src/data/sql_pipeline` folder in order.
+
+### Testing
+```sh
+pytest ./src/data/sql_pipeline/
 ```
 
 ### Launch the dashboard locally:
