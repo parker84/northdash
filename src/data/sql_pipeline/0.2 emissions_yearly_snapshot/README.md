@@ -1,13 +1,10 @@
 # 0.2 emissions_yearly_snapshot
 
-**Purpose**: Create a table with the avg_weekly_earnings per province and canada wide.
+**Purpose**: Create a table with the avg_weekly_emissions per province and canada wide per sector.
 
 **Grain unique column set**: [`year_begin_date`, `geo`, `sector`]
 
 **Semi additive facts**: [ `yearly_kilotonnes` ]
-
-### Caveats:
-1. This is excluding unclassified businesses
 
 ### Schema
 1. `year_begin_date`: 1st day of year being analyzed
