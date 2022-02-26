@@ -1,6 +1,6 @@
 # 0.2 emissions_yearly_snapshot
 
-**Purpose**: Create a table with the avg_weekly_emissions per province and canada wide per sector.
+**Purpose**: Create a table with the yearly emissions per province and canada wide per sector.
 
 **Grain unique column set**: [`year_begin_date`, `geo`, `sector`]
 
