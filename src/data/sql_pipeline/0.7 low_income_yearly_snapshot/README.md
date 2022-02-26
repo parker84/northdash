@@ -7,7 +7,7 @@
 **Non additive facts**: [ `low_income_rate` ]
 
 ### Caveats:
-
+1. Some `month_begin_date/geo/demographic` pairs are missing `low_income_rate`, but there are no missing values when `demographic == 'All persons'`
 
 ### Schema
 1. `month_begin_date`: 1st day of month being analyzed
