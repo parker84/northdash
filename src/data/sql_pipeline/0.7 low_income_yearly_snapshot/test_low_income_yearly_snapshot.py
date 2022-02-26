@@ -36,4 +36,4 @@ def test_processed_non_null_cols(low_income_yearly_snapshot_filtered):
     )
 
 def test_processed_for_holes(low_income_yearly_snapshot):
-    prepped_test_suite.test_for_holes(low_income_yearly_snapshot) # these do have holes
+    prepped_test_suite.test_for_holes(low_income_yearly_snapshot)
