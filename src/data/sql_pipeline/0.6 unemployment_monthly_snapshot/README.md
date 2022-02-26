@@ -8,6 +8,7 @@
 
 ### Caveats:
 1. This doesn't include data for under 15 years old
+2. Some `month_begin_date/geo/age_group/sex` pairs are missing `unemployment_rate`, but there are no missing values when `sex == 'Both sexes' and age_group == '15 years and over'`
 
 ### Schema
 1. `month_begin_date`: 1st day of month being analyzed
