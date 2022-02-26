@@ -33,7 +33,7 @@ def test_processed_unique_column_set(prices_monthly_snapshot, prices_monthly_sna
     
 def test_processed_non_null_cols(prices_monthly_snapshot):
     prepped_test_suite.test_for_nulls(
-        prices_monthly_snapshot, # these do have nulls
+        prices_monthly_snapshot,
         non_null_cols=['month_begin_date', 'geo', 'product_group', 'consumer_price_index']
     )
 

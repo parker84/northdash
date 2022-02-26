@@ -1,4 +1,4 @@
-# 0.5 low_income_yearly_snapshot
+# 0.5 0.8 prices_monthly_snapshot
 
 **Purpose**: Create a table with the consumer price index (CPI) per province and canada wide.
 
@@ -7,7 +7,7 @@
 **Non additive facts**: [ `consumer_price_index` ]
 
 ### Caveats:
-
+1. There are holes in the `month_begin_date/geo/product_group` combos, in part bc nunavut didn't become an official territory until 1999. But no wholes when `product_group == 'All-items' and month_begin_date > 2005`.
 
 ### Schema
 1. `month_begin_date`: 1st day of month being analyzed
